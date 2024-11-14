@@ -1,23 +1,36 @@
 import "./style.css";
 
+const DOMSelectors = {
+  container: document.querySelector("#app"),
+};
+
+function insertMainPage(data) {
+  data.types.forEach((type) =>
+    DOMSelectors.container.insertAdjacentHTML(
+      "beforeend",
+      `<div class="card">
+      <button type="submit" class="">${type}</button>
+    </div>`
+    )
+  );
+}
+
 async function getData() {
   //fetch returns a promise
   try {
-    const response = await fetch();
+    const response = await fetch("https://genshin.jmp.blue/");
     //guard clause
     if (response.status != 200) {
       throw new Error(response); //creates error state, pass through catch
     } else {
       const data = await response.json(); // turn into a json that we can work with
-      document.querySelector("h1").textContent = data.name;
+      insertMainPage(data);
     }
   } catch (error) {
     console.log(error);
     alert("sorry could not find object");
   }
   //wait for promise
-
-  console.log(response);
 }
 getData();
 
