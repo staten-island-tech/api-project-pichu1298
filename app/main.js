@@ -8,23 +8,63 @@ function insertMainPage(data) {
   data.types.forEach((type) =>
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
-      `<div class="card">
-      <button type="submit" class="">${type}</button>
-    </div>`
+      `<button type="submit" class="" id = "${type}">${type}</button>`
     )
   );
 }
 
-async function getData() {
+function mainPageButtons(data) {
+  let mpgBtns = document.querySelectorAll("button");
+  mpgBtns.forEach((btn) => {
+    btn.addEventListener("click", function (event) {
+      event.preventDefault();
+      DOMSelectors.container.innerHTML = "";
+      const clickedButton = event.target;
+      if (clickedButton.id === "artifacts") {
+        getData("artifacts");
+      } else if (clickedButton.id === "boss") {
+        getData("boss");
+      } else if (clickedButton.id === "characters") {
+        getData("characters");
+      } else if (clickedButton.id === "domains") {
+        getData("domains");
+      } else if (clickedButton.id === "elements") {
+        getData("elements");
+      } else if (clickedButton.id === "enemies") {
+        getData("enemies");
+      } else if (clickedButton.id === "materials") {
+        getData("materials");
+      } else if (clickedButton.id === "nations") {
+        getData("nations");
+      } else if (clickedButton.id === "weapons") {
+        getData("weapons");
+      }
+    });
+  });
+}
+
+async function getData(p) {
   //fetch returns a promise
   try {
-    const response = await fetch("https://genshin.jmp.blue/");
+    const url = "https://genshin.jmp.blue/" + p;
+    console.log(url);
+    const responseTypes = await fetch(url);
+
     //guard clause
-    if (response.status != 200) {
-      throw new Error(response); //creates error state, pass through catch
-    } else {
-      const data = await response.json(); // turn into a json that we can work with
+    if (responseTypes.status != 200) {
+      throw new Error(responseTypes); //creates error state, pass through catch
+    } else if (!p) {
+      const data = await responseTypes.json(); // turn into a json that we can work with
       insertMainPage(data);
+      mainPageButtons(data);
+    } else {
+      const data = await responseTypes.json();
+      data.forEach((item) => {
+        DOMSelectors.container.insertAdjacentHTML(
+          "beforeend",
+          `<button type="submit" class="" id = "${item}">${item}</button>`
+        );
+      });
     }
   } catch (error) {
     console.log(error);
@@ -32,7 +72,7 @@ async function getData() {
   }
   //wait for promise
 }
-getData();
+getData("");
 
 // import javascriptLogo from './javascript.svg'
 // import viteLogo from '/vite.svg'
