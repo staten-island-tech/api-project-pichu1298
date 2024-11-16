@@ -21,43 +21,57 @@ function mainPageButtons(data) {
       DOMSelectors.container.innerHTML = "";
       const clickedButton = event.target;
       if (clickedButton.id === "artifacts") {
-        getData("artifacts");
+        getData("artifacts", "");
       } else if (clickedButton.id === "boss") {
-        getData("boss");
+        getData("boss", "");
       } else if (clickedButton.id === "characters") {
-        getData("characters");
+        getData("characters", "");
+      } else if (clickedButton.id === "consumables") {
+        getData("consumables", "");
       } else if (clickedButton.id === "domains") {
-        getData("domains");
+        getData("domains", "");
       } else if (clickedButton.id === "elements") {
-        getData("elements");
+        getData("elements", "");
       } else if (clickedButton.id === "enemies") {
-        getData("enemies");
+        getData("enemies", "");
       } else if (clickedButton.id === "materials") {
-        getData("materials");
+        getData("materials", "");
       } else if (clickedButton.id === "nations") {
-        getData("nations");
+        getData("nations", "");
       } else if (clickedButton.id === "weapons") {
-        getData("weapons");
+        getData("weapons", "");
       }
     });
   });
 }
 
-async function getData(p) {
+function twoPageButtons() {
+  let secondaryButtons = document.querySelectorAll("button");
+  secondaryButtons.forEach((btn) => {
+    btn.addEventListener("click", function (event) {
+      event.preventDefault();
+      const secondaryClicked = event.target;
+      if (secondaryClicked.id === "") {
+      }
+    });
+  });
+}
+
+async function getData(p, l) {
   //fetch returns a promise
   try {
-    const url = "https://genshin.jmp.blue/" + p;
+    const url = "https://genshin.jmp.blue/" + p + l;
     console.log(url);
     const responseTypes = await fetch(url);
 
     //guard clause
     if (responseTypes.status != 200) {
       throw new Error(responseTypes); //creates error state, pass through catch
-    } else if (!p) {
+    } else if (!p && !l) {
       const data = await responseTypes.json(); // turn into a json that we can work with
       insertMainPage(data);
       mainPageButtons(data);
-    } else {
+    } else if (p) {
       const data = await responseTypes.json();
       data.forEach((item) => {
         DOMSelectors.container.insertAdjacentHTML(
@@ -65,6 +79,8 @@ async function getData(p) {
           `<button type="submit" class="" id = "${item}">${item}</button>`
         );
       });
+    } else if (l) {
+      const data = await responseTypes.json();
     }
   } catch (error) {
     console.log(error);
@@ -72,7 +88,7 @@ async function getData(p) {
   }
   //wait for promise
 }
-getData("");
+getData("", "");
 
 // import javascriptLogo from './javascript.svg'
 // import viteLogo from '/vite.svg'
