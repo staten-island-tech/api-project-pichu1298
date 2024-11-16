@@ -52,6 +52,8 @@ function twoPageButtons() {
       event.preventDefault();
       const secondaryClicked = event.target;
       if (secondaryClicked.id === "") {
+        //find a way to import this page that was clicked.
+        //find a way to grab the ids of each sub category. Maybe ask chat gpt to do it for me, too lazy for rewriting the same line of code every single time.
       }
     });
   });
@@ -68,19 +70,30 @@ async function getData(p, l) {
     if (responseTypes.status != 200) {
       throw new Error(responseTypes); //creates error state, pass through catch
     } else if (!p && !l) {
+      //if the two parameters are empty run this
       const data = await responseTypes.json(); // turn into a json that we can work with
       insertMainPage(data);
       mainPageButtons(data);
-    } else if (p) {
+    } else if (p && !l) {
+      //if there is something in p and not l run this
       const data = await responseTypes.json();
+      data.forEach((item) => {
+        DOMSelectors.container.insertAdjacentHTML(
+          //inserts secondary buttons
+          "beforeend",
+          `<button type="submit" class="" id = "${item}">${item}</button>`
+        );
+      });
+    } else if (l) {
+      //needs to be fixed for later, but basically if l exists in parameters.
+      const data = await responseTypes.json();
+      //try to fix this so it suits the format of each option later.
       data.forEach((item) => {
         DOMSelectors.container.insertAdjacentHTML(
           "beforeend",
           `<button type="submit" class="" id = "${item}">${item}</button>`
         );
       });
-    } else if (l) {
-      const data = await responseTypes.json();
     }
   } catch (error) {
     console.log(error);
