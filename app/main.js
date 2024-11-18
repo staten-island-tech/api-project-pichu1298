@@ -1,5 +1,6 @@
 import "./style.css";
-
+let firstClickedButton = "";
+let secondClickedButton = "";
 const DOMSelectors = {
   container: document.querySelector("#app"),
 };
@@ -13,34 +14,14 @@ function insertMainPage(data) {
   );
 }
 
-function mainPageButtons(data) {
+function mainPageButtons() {
   let mpgBtns = document.querySelectorAll("button");
   mpgBtns.forEach((btn) => {
     btn.addEventListener("click", function (event) {
       event.preventDefault();
       DOMSelectors.container.innerHTML = "";
-      const clickedButton = event.target;
-      if (clickedButton.id === "artifacts") {
-        getData("artifacts", "");
-      } else if (clickedButton.id === "boss") {
-        getData("boss", "");
-      } else if (clickedButton.id === "characters") {
-        getData("characters", "");
-      } else if (clickedButton.id === "consumables") {
-        getData("consumables", "");
-      } else if (clickedButton.id === "domains") {
-        getData("domains", "");
-      } else if (clickedButton.id === "elements") {
-        getData("elements", "");
-      } else if (clickedButton.id === "enemies") {
-        getData("enemies", "");
-      } else if (clickedButton.id === "materials") {
-        getData("materials", "");
-      } else if (clickedButton.id === "nations") {
-        getData("nations", "");
-      } else if (clickedButton.id === "weapons") {
-        getData("weapons", "");
-      }
+      firstClickedButton = event.target;
+      getData(firstClickedButton.id, "");
     });
   });
 }
@@ -50,11 +31,10 @@ function twoPageButtons() {
   secondaryButtons.forEach((btn) => {
     btn.addEventListener("click", function (event) {
       event.preventDefault();
-      const secondaryClicked = event.target;
-      if (secondaryClicked.id === "") {
-        //find a way to import this page that was clicked.
-        //find a way to grab the ids of each sub category. Maybe ask chat gpt to do it for me, too lazy for rewriting the same line of code every single time.
-      }
+      secondClickedButton = event.target;
+      getData(firstClickedButton.id, "/" + secondClickedButton.id);
+      //find a way to import this page that was clicked.
+      //find a way to grab the ids of each sub category. Maybe ask chat gpt to do it for me, too lazy for rewriting the same line of code every single time.
     });
   });
 }
@@ -71,12 +51,13 @@ async function getData(p, l) {
       throw new Error(responseTypes); //creates error state, pass through catch
     } else if (!p && !l) {
       //if the two parameters are empty run this
-      const data = await responseTypes.json(); // turn into a json that we can work with
+      let data = await responseTypes.json(); // turn into a json that we can work with
+      console.log(data);
       insertMainPage(data);
       mainPageButtons(data);
     } else if (p && !l) {
       //if there is something in p and not l run this
-      const data = await responseTypes.json();
+      let data = await responseTypes.json();
       data.forEach((item) => {
         DOMSelectors.container.insertAdjacentHTML(
           //inserts secondary buttons
@@ -84,16 +65,34 @@ async function getData(p, l) {
           `<button type="submit" class="" id = "${item}">${item}</button>`
         );
       });
+      twoPageButtons();
     } else if (l) {
       //needs to be fixed for later, but basically if l exists in parameters.
-      const data = await responseTypes.json();
+      let data = await responseTypes.json();
       //try to fix this so it suits the format of each option later.
-      data.forEach((item) => {
+      if (p === "nations") {
+        DOMSelectors.container.innerHTML = "";
         DOMSelectors.container.insertAdjacentHTML(
           "beforeend",
-          `<button type="submit" class="" id = "${item}">${item}</button>`
+          `<div id = "card">
+          <h1>Name: ${data.name} </h1>
+          <h2>Element: ${data.element}</h2>
+          <h2>Archon: ${data.archon} </h2>
+          <h2>Controlling Entity: ${data.controllingEntity}</h2>
+        </div>`
         );
-      });
+      } else if (p === "artifacts") {
+        DOMSelectors.container.innerHTML = "";
+        DOMSelectors.container.insertAdjacentHTML(
+          "beforeend",
+          `<div class = "card">
+        <h1>Name: ${data.name}</h1>
+        <h2>Max Rarity: ${data.max_rarity}</h2>
+        <h2>2 Piece Bonus: ${data["2-piece_bonus"]}</h2>
+        <h2>4 Piece Bonus: sdfgdf</h2>
+      </div>`
+        );
+      }
     }
   } catch (error) {
     console.log(error);
