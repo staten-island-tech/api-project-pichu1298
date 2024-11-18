@@ -20,8 +20,34 @@ function mainPageButtons() {
     btn.addEventListener("click", function (event) {
       event.preventDefault();
       DOMSelectors.container.innerHTML = "";
+<<<<<<< Updated upstream
       firstClickedButton = event.target;
       getData(firstClickedButton.id, "");
+=======
+      const clickedButton = event.target;
+      // Try getData(clickedButton, ""); at some point, might work better and condense all these if else statements.
+      if (clickedButton.id === "artifacts") {
+        getData("artifacts", "");
+      } else if (clickedButton.id === "boss") {
+        getData("boss", "");
+      } else if (clickedButton.id === "characters") {
+        getData("characters", "");
+      } else if (clickedButton.id === "consumables") {
+        getData("consumables", "");
+      } else if (clickedButton.id === "domains") {
+        getData("domains", "");
+      } else if (clickedButton.id === "elements") {
+        getData("elements", "");
+      } else if (clickedButton.id === "enemies") {
+        getData("enemies", "");
+      } else if (clickedButton.id === "materials") {
+        getData("materials", "");
+      } else if (clickedButton.id === "nations") {
+        getData("nations", "");
+      } else if (clickedButton.id === "weapons") {
+        getData("weapons", "");
+      }
+>>>>>>> Stashed changes
     });
   });
 }
@@ -31,10 +57,19 @@ function twoPageButtons() {
   secondaryButtons.forEach((btn) => {
     btn.addEventListener("click", function (event) {
       event.preventDefault();
+<<<<<<< Updated upstream
       secondClickedButton = event.target;
       getData(firstClickedButton.id, "/" + secondClickedButton.id);
       //find a way to import this page that was clicked.
       //find a way to grab the ids of each sub category. Maybe ask chat gpt to do it for me, too lazy for rewriting the same line of code every single time.
+=======
+      const secondaryClicked = event.target;
+      if (secondaryClicked.id === "") {
+        //find a way to import this page that was clicked.
+        //find a way to grab the ids of each sub category. Maybe ask chat gpt to do it for me, too lazy for rewriting the same line of code every single time.
+        //try getData(not sure grab current, secondaryClicked);
+      }
+>>>>>>> Stashed changes
     });
   });
 }
