@@ -85,7 +85,7 @@ function nationsLoading(data) {
   }
 }
 function weeklyBossesLoading(data) {
-  if (k === "weekly-boss") {
+  if (k === "/weekly-boss") {
     // Clear the container
     DOMSelectors.container.innerHTML = "";
 
@@ -239,7 +239,7 @@ function charactersLoading(data) {
 }
 
 function foodLoading(data) {
-  if (l === "food") {
+  if (l === "/food") {
     let htmlFood = ``;
 
     // Loop through each food item
@@ -302,6 +302,68 @@ function domainsLoading(data) {
     //Write the domain stuff down.
     //Check previous code for references
     //Format should be in index
+  }
+}
+function elementLoading(data) {
+  if (p === "element") {
+  }
+}
+function enemiesLoading(data) {
+  if (p === "enemies") {
+  }
+}
+function bossMatLoading(data) {
+  if (k === "/boss-material") {
+  }
+}
+
+function charAscensionMatLoading(data) {
+  if (k === "/character-ascension") {
+  }
+}
+
+function characterExperienceMatLoading(data) {
+  if (k === "/character-experience") {
+  }
+}
+
+function commonAscensionMatLoading(data) {
+  if (k === "/common-ascension") {
+  }
+}
+
+function cookingIngredientsMatLoading(data) {
+  if (k === "/cooking-ingredients") {
+  }
+}
+
+function localSpecialtiesMatLoading(data) {
+  if (k === "/local-specialties") {
+  }
+}
+
+function talentBookMatLoading(data) {
+  if (k === "/talent-book") {
+  }
+}
+
+function talentBossMatLoading(data) {
+  if (k === "/talent-boss") {
+  }
+}
+
+function weaponAscensionMatLoading(data) {
+  if (k === "/weapon-ascension") {
+  }
+}
+
+function weaponExperienceMatLoading(data) {
+  if (k === "/weapon-experience") {
+  }
+}
+
+function weaoponLoading(data) {
+  if (p === "weapons") {
   }
 }
 
