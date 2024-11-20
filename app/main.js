@@ -230,41 +230,79 @@ function charactersLoading(data) {
   );
 }
 
+let currentIndex = 0;
+const itemsPerLoad = 3;
 function foodLoading(data) {
+  const foodArray = Object.values(data);
+  let chunk = foodArray.slice(currentIndex, currentIndex + itemsPerLoad);
   let htmlFood = ``;
 
-  // Convert the object to an array of food items
-  const foodItems = Object.values(data); // Get an array of the values (food items)
-
-  foodItems.forEach((food) => {
+  // Use Object.values to get an array of all food items from the data object
+  chunk.forEach((food) => {
     htmlFood += `
-          <div class="card">
-            <h1>Name: ${food.name}</h1>
-            <h2>Rarity: ${food.rarity}</h2>
-            <h2>Type: ${food.type}</h2>
-            <h2>Effect: ${food.effect}</h2>
-            <h2>Can player cook recipe: ${food.hasRecipe}</h2>
-            <h2>Description</h2>
-            <p>${food.description}</p>
-            <h2>Event obtained in: ${food.event || "N/A"}</h2>
-        `;
+      <div class="card">
+        <h1>Name: ${food.name}</h1>
+        <h2>Rarity: ${food.rarity}</h2>
+        <h2>Type: ${food.type}</h2>
+        <h2>Effect: ${food.effect}</h2>
+        <h2> Proficiency: ${food.proficiency}</h2>
+        <h2>Can player cook recipe: ${food.hasRecipe ? "Yes" : "No"}</h2>
+        <h2>Description</h2>
+        <p>${food.description}</p>
+        <h2>Event obtained in: ${food.event || "N/A"}</h2>
+    `;
 
     // Check if the food item has a recipe and if recipe is an array
-    if (food.hasRecipe === true && Array.isArray(food.recipe)) {
+    if (food.hasRecipe && Array.isArray(food.recipe)) {
       htmlFood += `<h2>Recipe</h2>`;
-      food.recipe.forEach(
-        (item) =>
-          (htmlFood += `
+      food.recipe.forEach((item) => {
+        htmlFood += `
           <ul>
             <li><strong>${item.item}</strong>: ${item.quantity}</li>
-          </ul>`)
-      );
+          </ul>
+        `;
+      });
     }
 
     htmlFood += `</div>`;
-    DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
   });
+  currentIndex += itemsPerLoad;
+
+  // Insert the final HTML into the container
+  DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
 }
+
+// Convert the object to an array of food items
+// const foodItems = Object.values(data); // Get an array of the values (food items)
+
+// foodItems.forEach((food) => {
+//   htmlFood += `
+//         <div class="card">
+//           <h1>Name: ${food.name}</h1>
+//           <h2>Rarity: ${food.rarity}</h2>
+//           <h2>Type: ${food.type}</h2>
+//           <h2>Effect: ${food.effect}</h2>
+//           <h2>Can player cook recipe: ${food.hasRecipe}</h2>
+//           <h2>Description</h2>
+//           <p>${food.description}</p>
+//           <h2>Event obtained in: ${food.event || "N/A"}</h2>
+//       `;
+
+//   // Check if the food item has a recipe and if recipe is an array
+//   if (food.hasRecipe === true && Array.isArray(food.recipe)) {
+//     htmlFood += `<h2>Recipe</h2>`;
+//     food.recipe.forEach(
+//       (item) =>
+//         (htmlFood += `
+//         <ul>
+//           <li><strong>${item.item}</strong>: ${item.quantity}</li>
+//         </ul>`)
+//     );
+//   }
+
+//   htmlFood += `</div>`;
+//   DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
+// });
 
 // function potionsLoading(data) {
 //   if (l === "potions") {
