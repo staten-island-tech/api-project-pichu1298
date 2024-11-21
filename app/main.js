@@ -124,7 +124,7 @@ function weeklyBossesLoading(data) {
   DOMSelectors.container.insertAdjacentHTML("beforeend", htmlBosses);
 }
 
-function charactersLoading(data) {
+function charactersLoading(data, imgURL) {
   DOMSelectors.container.innerHTML = "";
   let htmlCharactersProfileCard = `
         <h1>Name: ${data.name}</h1>
@@ -140,7 +140,9 @@ function charactersLoading(data) {
         <h2>Birthday: ${data.birthday}</h2>
         <h2>Description</h2>
         <p>${data.description}</p>
+        <img src="${imgURL}" alt="">
         `;
+
   DOMSelectors.container.insertAdjacentHTML(
     "beforeend",
     htmlCharactersProfileCard
@@ -304,28 +306,28 @@ function foodLoading(data) {
 //   DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
 // });
 
-// function potionsLoading(data) {
-//   if (l === "potions") {
-//     let htmlPotions = ``;
-//     data.forEach((potion) => {
-//       htmlPotions += `
-//       <div class = "card">
-//       <h1>Name: ${potion.name}</h1>
-//       <h2>Effect: ${potion.effect}</h2>
-//       <h2>Rarity: ${potion.rarity}</h2>
-//       <h2>Crafting Materials</h2>`;
+function potionsLoading(data) {
+  const potionsData = Object.values(data);
 
-//       potion.crafting.forEach(
-//         (item) =>
-//           (htmlPotions += `<ul>
-//         <li><strong>${item.item}</strong>: ${item.quantity}</li>
-//       </ul>`)
-//       );
-//       htmlPotions += `</div>`;
-//     });
-//     DOMSelectors.container.insertAdjacentElement("beforeend", htmlPotions);
-//   }
-// }
+  let htmlPotions = ``;
+  potionsData.forEach((potion) => {
+    htmlPotions += `
+      <div class = "card">
+      <h1>Name: ${potion.name}</h1>
+      <h2>Effect: ${potion.effect}</h2>
+      <h2>Rarity: ${potion.rarity}</h2>
+      <h2>Crafting Materials</h2>`;
+
+    potion.crafting.forEach(
+      (item) =>
+        (htmlPotions += `<ul>
+        <li><strong>${item.item}</strong>: ${item.quantity}</li>
+      </ul>`)
+    );
+    htmlPotions += `</div>`;
+  });
+  DOMSelectors.container.insertAdjacentHTML("beforeend", htmlPotions);
+}
 
 // function domainsLoading(data) {
 //   if (p === "domains") {
@@ -450,9 +452,16 @@ async function getData(p, k, l) {
       } else if (k === "/weekly-boss") {
         weeklyBossesLoading(data);
       } else if (p === "characters") {
-        charactersLoading(data);
+        let imgURL = url + "/gacha-splash";
+        charactersLoading(data, imgURL);
+
+        console.log(getData);
       } else if (k === "/food") {
-        foodLoading(data);
+        console.log("to be soon");
+        // foodLoading(data);
+      } else if (k === "/potions") {
+        console.log("to be soon");
+        // potionsLoading(data);
       }
     } else if (p && k && !l) {
       let data = await responseTypes.json();
