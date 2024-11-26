@@ -125,8 +125,19 @@ function weeklyBossesLoading(data) {
 }
 
 function charactersLoading(data, imgURL) {
+  const visionColors = {
+    Pyro: "bg-pyro-primary",
+    Hydro: "bg-hydro-primary",
+    Electro: "bg-electro-primary",
+    Cryo: "bg-cryo-primary",
+    Anemo: "bg-anemo-primary",
+    Geo: "bg-geo-primary",
+    Dendro: "bg-dendro-primary",
+  };
+  const visionClass = visionColors[data.vision] || "bg-gray-200";
   DOMSelectors.container.innerHTML = "";
   let htmlCharactersProfileCard = `
+  <div class = "${visionClass} p-4 rounded text-white">
         <h1>Name: ${data.name}</h1>
         <h2>Title: ${data.title}</h2>
         <h2>Vision: ${data.vision}</h2>
@@ -141,7 +152,7 @@ function charactersLoading(data, imgURL) {
         <h2>Description</h2>
         <p>${data.description}</p>
         <img src="${imgURL}" alt="">
-        `;
+        </div>`;
 
   DOMSelectors.container.insertAdjacentHTML(
     "beforeend",
@@ -151,7 +162,7 @@ function charactersLoading(data, imgURL) {
   // Loop through skill talents
   data.skillTalents.forEach((talent) => {
     htmlCharactersSkillCards += `
-    <div class="card">
+    <div class="${visionClass} p-4 rounded text-white w-[30%]" id = "card">
       <h2>Skill Talent</h2>
       <h3>Name: ${talent.name}</h3>
       <h4>Type: ${talent.unlock}</h4>
@@ -179,7 +190,7 @@ function charactersLoading(data, imgURL) {
   data.passiveTalents.forEach((talent) => {
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
-      `<div class="card">
+      `<div class="${visionClass} p-4 rounded text-white" id = "card">
           <h3>Passive Talent Name: ${talent.name}</h3>
           <h4>Unlock: ${talent.unlock}</h4>
           <h4>Description:</h4>
@@ -192,7 +203,7 @@ function charactersLoading(data, imgURL) {
   data.constellations.forEach((constellation) =>
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
-      `<div class = "card">
+      `<div class = "${visionClass} p-4 rounded text-white" id = "card">
         <h2>Name: ${constellation.name}</h2>
     <h2>Unlock: ${constellation.unlock}</h2>
     <h3>Description</h3>
@@ -205,7 +216,7 @@ function charactersLoading(data, imgURL) {
   // Loop through each ascension level (level_20, level_40, etc.)
   for (let level in data.ascension_materials) {
     htmlAscensionMaterialsCards += `
-    <div class="card">
+    <div class="${visionClass} p-4 rounded text-white" id = "card">
       <h3>Materials for ${
         level.replace(/_/g, " ").charAt(0).toUpperCase() + level.slice(1)
       }:</h3>
