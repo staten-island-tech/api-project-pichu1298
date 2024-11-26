@@ -10,7 +10,7 @@ function insertMainPage(data) {
   data.types.forEach((type) =>
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
-      `<button type="submit" class="" id = "${type}">${type}</button>`
+      `<button type="submit" class="btn" id = "${type}">${type}</button>`
     )
   );
 }
@@ -63,7 +63,7 @@ function artifactLoading(data) {
         <h1>Name: ${data.name}</h1>
         <h2>Max Rarity: ${data["max_rarity"]}</h2>
         <h2>2 Piece Bonus: ${data["2-piece_bonus"]}</h2>
-        <h2>4 Piece Bonus: sdfgdf</h2>
+        <h2>4 Piece Bonus: ${data["4-piece_bonus"]}</h2>
       </div>`
   );
 }
@@ -424,7 +424,7 @@ async function getData(p, k, l) {
         DOMSelectors.container.insertAdjacentHTML(
           //inserts secondary buttons
           "beforeend",
-          `<button type="submit" class="" id = "${item}">${item}</button>`
+          `<button type="submit" class="btn" id = "${item}">${item}</button>`
         );
       });
       twoPageButtons();
@@ -435,7 +435,7 @@ async function getData(p, k, l) {
         DOMSelectors.container.insertAdjacentHTML(
           //inserts secondary buttons
           "beforeend",
-          `<button type="submit" class="" id = "${item}">${item}</button>`
+          `<button type="submit" class="btn" id = "${item}">${item}</button>`
         );
       });
       threePageButtons();
@@ -470,7 +470,7 @@ async function getData(p, k, l) {
         DOMSelectors.container.insertAdjacentHTML(
           //inserts secondary buttons
           "beforeend",
-          `<button type="submit" class="" id = "${item}">${item}</button>`
+          `<button type="submit" class="btn" id = "${item}">${item}</button>`
         );
       });
       threePageButtons();
