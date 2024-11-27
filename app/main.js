@@ -68,12 +68,13 @@ function artifactLoading(data) {
   );
 }
 
-function nationsLoading(data) {
+function nationsLoading(data, imgNation) {
   DOMSelectors.container.innerHTML = "";
   DOMSelectors.container.insertAdjacentHTML(
     "beforeend",
     `<div id = "card">
           <h1>Name: ${data.name} </h1>
+          <img src="${imgNation}" alt="">
           <h2>Element: ${data.element}</h2>
           <h2>Archon: ${data.archon} </h2>
           <h2>Controlling Entity: ${data.controllingEntity}</h2>
@@ -137,7 +138,7 @@ function charactersLoading(data, imgURL) {
   const visionClass = visionColors[data.vision] || "bg-gray-200";
   DOMSelectors.container.innerHTML = "";
   let htmlCharactersProfileCard = `
-  <div class = "${visionClass} p-4 rounded text-white">
+  <div class = "${visionClass} p-4 rounded text-white w-[100%]">
         <h1>Name: ${data.name}</h1>
         <h2>Title: ${data.title}</h2>
         <h2>Vision: ${data.vision}</h2>
@@ -162,7 +163,7 @@ function charactersLoading(data, imgURL) {
   // Loop through skill talents
   data.skillTalents.forEach((talent) => {
     htmlCharactersSkillCards += `
-    <div class="${visionClass} p-4 rounded text-white w-[30%]" id = "card">
+    <div class="${visionClass} p-4 m-4 rounded text-white w-[30%]" id = "card">
       <h2>Skill Talent</h2>
       <h3>Name: ${talent.name}</h3>
       <h4>Type: ${talent.unlock}</h4>
@@ -190,7 +191,7 @@ function charactersLoading(data, imgURL) {
   data.passiveTalents.forEach((talent) => {
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
-      `<div class="${visionClass} p-4 rounded text-white" id = "card">
+      `<div class="${visionClass} p-4 m-4 rounded text-white w-[45%]" id = "card">
           <h3>Passive Talent Name: ${talent.name}</h3>
           <h4>Unlock: ${talent.unlock}</h4>
           <h4>Description:</h4>
@@ -203,7 +204,7 @@ function charactersLoading(data, imgURL) {
   data.constellations.forEach((constellation) =>
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
-      `<div class = "${visionClass} p-4 rounded text-white" id = "card">
+      `<div class = "${visionClass} p-4 m-4 rounded text-white w-[30%]" id = "card">
         <h2>Name: ${constellation.name}</h2>
     <h2>Unlock: ${constellation.unlock}</h2>
     <h3>Description</h3>
@@ -216,7 +217,7 @@ function charactersLoading(data, imgURL) {
   // Loop through each ascension level (level_20, level_40, etc.)
   for (let level in data.ascension_materials) {
     htmlAscensionMaterialsCards += `
-    <div class="${visionClass} p-4 rounded text-white" id = "card">
+    <div class="${visionClass} p-4 m-4 rounded text-white w-[30%]" id = "card">
       <h3>Materials for ${
         level.replace(/_/g, " ").charAt(0).toUpperCase() + level.slice(1)
       }:</h3>
@@ -243,17 +244,15 @@ function charactersLoading(data, imgURL) {
   );
 }
 
-let currentIndex = 0;
-const itemsPerLoad = 3;
 function foodLoading(data) {
   const foodArray = Object.values(data);
-  let chunk = foodArray.slice(currentIndex, currentIndex + itemsPerLoad);
   let htmlFood = ``;
 
   // Use Object.values to get an array of all food items from the data object
-  chunk.forEach((food) => {
+  foodArray.forEach((food) => {
+    htmlFood = ``;
     htmlFood += `
-      <div class="card">
+      <div class="p-4 m-4 rounded w-[30%]" id = "card">
         <h1>Name: ${food.name}</h1>
         <h2>Rarity: ${food.rarity}</h2>
         <h2>Type: ${food.type}</h2>
@@ -278,11 +277,10 @@ function foodLoading(data) {
     }
 
     htmlFood += `</div>`;
+    DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
   });
-  currentIndex += itemsPerLoad;
 
   // Insert the final HTML into the container
-  DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
 }
 
 // Convert the object to an array of food items
@@ -426,7 +424,7 @@ async function getData(p, k, l) {
       console.log(data);
       insertMainPage(data);
       mainPageButtons(data);
-    } else if (p && !k) {
+    } else if (p && !k && !l) {
       console.log(p);
       //if there is something in p and not l run this
       let data = await responseTypes.json();
@@ -457,7 +455,8 @@ async function getData(p, k, l) {
       //try to fix this so it suits the format of each option later.
       if (p === "nations") {
         console.log("Nations accepted");
-        nationsLoading(data);
+        let imgNation = url + "/icon";
+        nationsLoading(data, imgNation);
       } else if (p === "artifacts") {
         artifactLoading(data);
       } else if (k === "/weekly-boss") {
@@ -469,7 +468,7 @@ async function getData(p, k, l) {
         console.log(getData);
       } else if (k === "/food") {
         console.log("to be soon");
-        // foodLoading(data);
+        foodLoading(data);
       } else if (k === "/potions") {
         console.log("to be soon");
         // potionsLoading(data);
