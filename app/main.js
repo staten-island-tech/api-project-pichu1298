@@ -61,6 +61,7 @@ function artifactLoading(data) {
     "beforeend",
     `<div class = "card">
         <h1>Name: ${data.name}</h1>
+        <img src="" alt="">
         <h2>Max Rarity: ${data["max_rarity"]}</h2>
         <h2>2 Piece Bonus: ${data["2-piece_bonus"]}</h2>
         <h2>4 Piece Bonus: ${data["4-piece_bonus"]}</h2>
@@ -245,26 +246,45 @@ function charactersLoading(data, imgURL) {
 }
 
 function foodLoading(data) {
-  const foodArray = Object.values(data);
-  let htmlFood = ``;
+  console.log(DOMSelectors.filterButtons);
 
-  // Use Object.values to get an array of all food items from the data object
-  foodArray.forEach((food) => {
-    htmlFood = ``;
+  const rarityColors = {
+    1: "bg-oneStar-primary",
+    2: "bg-twoStar-primary",
+    3: "bg-threeStar-primary",
+    4: "bg-fourStar-primary",
+    5: "bg-fiveStar-primary",
+  };
+
+  DOMSelectors.container.innerHTML = ""; // Clear container before loading new data
+  let foodArray = Object.entries(data).filter(([key, value]) => key !== "id");
+  // Get all food items
+  let htmlFood = ``; // Initialize the HTML string
+
+  // Loop through all filtered food items
+  foodArray.forEach(([key, food]) => {
+    // Generate image URL dynamically based on food name
+    let imageUrl = `https://genshin.jmp.blue/consumables/food/${key}`;
+
+    // Get the rarity class
+    let rarityClass = rarityColors[food.rarity] || "bg-gray-200";
+
+    // Build HTML for each food item
     htmlFood += `
-      <div class="p-4 m-4 rounded w-[30%]" id = "card">
+      <div class="p-4 m-4 rounded w-[30%] ${rarityClass}" id="card">
         <h1>Name: ${food.name}</h1>
         <h2>Rarity: ${food.rarity}</h2>
         <h2>Type: ${food.type}</h2>
         <h2>Effect: ${food.effect}</h2>
-        <h2> Proficiency: ${food.proficiency}</h2>
+        <h2>Proficiency: ${food.proficiency}</h2>
         <h2>Can player cook recipe: ${food.hasRecipe ? "Yes" : "No"}</h2>
-        <h2>Description</h2>
+        <h2>Description:</h2>
         <p>${food.description}</p>
+        <img src="${imageUrl}" alt="Image not found." />
         <h2>Event obtained in: ${food.event || "N/A"}</h2>
     `;
 
-    // Check if the food item has a recipe and if recipe is an array
+    // If food has a recipe, display it
     if (food.hasRecipe && Array.isArray(food.recipe)) {
       htmlFood += `<h2>Recipe</h2>`;
       food.recipe.forEach((item) => {
@@ -276,11 +296,11 @@ function foodLoading(data) {
       });
     }
 
-    htmlFood += `</div>`;
-    DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
+    htmlFood += `</div>`; // Close each food item div
   });
 
   // Insert the final HTML into the container
+  DOMSelectors.container.insertAdjacentHTML("beforeend", htmlFood);
 }
 
 // Convert the object to an array of food items
@@ -316,25 +336,49 @@ function foodLoading(data) {
 // });
 
 function potionsLoading(data) {
-  const potionsData = Object.values(data);
+  DOMSelectors.container.innerHTML = "";
 
+  // Extract key-value pairs from the data object
+  const potionsData = Object.entries(data).filter(
+    ([key, value]) => key !== "id"
+  );
+
+  // Initialize an empty string to hold the HTML
   let htmlPotions = ``;
-  potionsData.forEach((potion) => {
-    htmlPotions += `
-      <div class = "card">
-      <h1>Name: ${potion.name}</h1>
-      <h2>Effect: ${potion.effect}</h2>
-      <h2>Rarity: ${potion.rarity}</h2>
-      <h2>Crafting Materials</h2>`;
+  let link = "https://genshin.jmp.blue/consumables/potions/";
+  // Loop through each entry (key-value pair)
+  potionsData.forEach(([key, potion]) => {
+    console.log("Key:", key); // Logs the potion key
+    console.log("Potion:", potion); // Logs the potion object
 
-    potion.crafting.forEach(
-      (item) =>
-        (htmlPotions += `<ul>
-        <li><strong>${item.item}</strong>: ${item.quantity}</li>
-      </ul>`)
-    );
-    htmlPotions += `</div>`;
+    htmlPotions += `
+      <div class="card p-4 m-4 rounded w-[30%] bg-gray-100">
+        <h1 class="text-lg font-bold">Name: ${potion.name}</h1>
+        <img src="${link + key}" alt="">
+        <h2 class="text-sm">Effect: ${potion.effect}</h2>
+        <h2 class="text-sm">Rarity: ${potion.rarity}</h2>
+        <h2 class="font-semibold mt-2">Crafting Materials:</h2>
+        <ul>
+    `;
+
+    // Check if crafting exists and is an array
+    if (Array.isArray(potion.crafting)) {
+      potion.crafting.forEach((item) => {
+        htmlPotions += `
+          <li>${item.item}: <strong>${item.quantity}</strong></li>
+        `;
+      });
+    } else {
+      htmlPotions += `<li>No crafting materials found.</li>`;
+    }
+
+    htmlPotions += `
+        </ul>
+      </div>
+    `;
   });
+
+  // Insert the generated HTML into the DOM
   DOMSelectors.container.insertAdjacentHTML("beforeend", htmlPotions);
 }
 
@@ -471,7 +515,7 @@ async function getData(p, k, l) {
         foodLoading(data);
       } else if (k === "/potions") {
         console.log("to be soon");
-        // potionsLoading(data);
+        potionsLoading(data);
       }
     } else if (p && k && !l) {
       let data = await responseTypes.json();

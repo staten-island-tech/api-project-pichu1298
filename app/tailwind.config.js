@@ -32,6 +32,21 @@ module.exports = {
           primary: "#78350f",
           secondary: "#b45309",
         },
+        oneStar: {
+          primary: "#9ca3af",
+        },
+        twoStar: {
+          primary: "#22c55e",
+        },
+        threeStar: {
+          primary: "#3b82f6",
+        },
+        fourStar: {
+          primary: "#9333ea",
+        },
+        fiveStar: {
+          primary: "#eab308",
+        },
       },
     },
   },
