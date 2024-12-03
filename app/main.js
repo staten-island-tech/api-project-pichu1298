@@ -272,16 +272,22 @@ function foodLoading(data) {
     // Build HTML for each food item
     htmlFood += `
       <div class="p-4 m-4 rounded w-[30%] ${rarityClass}" id="card">
-        <h1>Name: ${food.name}</h1>
-        <h2>Rarity: ${food.rarity}</h2>
-        <h2>Type: ${food.type}</h2>
-        <h2>Effect: ${food.effect}</h2>
-        <h2>Proficiency: ${food.proficiency}</h2>
-        <h2>Can player cook recipe: ${food.hasRecipe ? "Yes" : "No"}</h2>
-        <h2>Description:</h2>
+        <h1 class = "text-xl font-bold mb-2">Name: ${food.name}</h1>
+        <h2 class = "text-lg font-semibold mb-1">Rarity: ${food.rarity}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Type: ${food.type}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Effect: ${food.effect}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Proficiency: ${
+          food.proficiency
+        }</h2>
+        <h2 class = "text-lg font-semibold mb-1">Can player cook recipe: ${
+          food.hasRecipe ? "Yes" : "No"
+        }</h2>
+        <h2 class = "text-lg font-semibold mb-1">Description:</h2>
         <p>${food.description}</p>
-        <img src="${imageUrl}" alt="Image not found." />
-        <h2>Event obtained in: ${food.event || "N/A"}</h2>
+        <img src="${imageUrl}" classalt="Image not found." />
+        <h2 class = "text-lg font-semibold mb-1">Event obtained in: ${
+          food.event || "N/A"
+        }</h2>
     `;
 
     // If food has a recipe, display it
