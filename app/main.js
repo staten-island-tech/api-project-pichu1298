@@ -7,7 +7,15 @@ const DOMSelectors = {
 };
 
 function insertMainPage(data) {
-  data.types.forEach((type) =>
+  let filteredTypes = data.types.filter(
+    (type) =>
+      type === "artifacts" ||
+      type === "boss" ||
+      type === "characters" ||
+      type === "consumables"
+  );
+  console.log(filteredTypes);
+  filteredTypes.forEach((type) =>
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
       `<button type="submit" class="btn" id = "${type}">${type}</button>`
@@ -140,18 +148,18 @@ function charactersLoading(data, imgURL) {
   DOMSelectors.container.innerHTML = "";
   let htmlCharactersProfileCard = `
   <div class = "${visionClass} p-4 rounded text-white w-[100%]">
-        <h1>Name: ${data.name}</h1>
-        <h2>Title: ${data.title}</h2>
-        <h2>Vision: ${data.vision}</h2>
-        <h2>Weapon: ${data.weapon}</h2>
-        <h2>Gender: ${data.gender}</h2>
-        <h2>Nation: ${data.nation}</h2>
-        <h2>Affiliation: ${data.affiliation}</h2>
-        <h2>Rarity: ${data.rarity}</h2>
-        <h2>Release: ${data.release}</h2>
-        <h2>Constellation: ${data.constellation}</h2>
-        <h2>Birthday: ${data.birthday}</h2>
-        <h2>Description</h2>
+        <h1 class = "text-xl font-bold mb-2">Name: ${data.name}</h1>
+        <h2 class = "text-lg font-semibold mb-1">Title: ${data.title}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Vision: ${data.vision}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Weapon: ${data.weapon}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Gender: ${data.gender}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Nation: ${data.nation}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Affiliation: ${data.affiliation}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Rarity: ${data.rarity}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Release: ${data.release}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Constellation: ${data.constellation}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Birthday: ${data.birthday}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Description</h2>
         <p>${data.description}</p>
         <img src="${imgURL}" alt="">
         </div>`;
@@ -165,7 +173,7 @@ function charactersLoading(data, imgURL) {
   data.skillTalents.forEach((talent) => {
     htmlCharactersSkillCards += `
     <div class="${visionClass} p-4 m-4 rounded text-white w-[30%]" id = "card">
-      <h2>Skill Talent</h2>
+      <h2 class = "text-lg font-semibold mb-1">Skill Talent</h2>
       <h3>Name: ${talent.name}</h3>
       <h4>Type: ${talent.unlock}</h4>
       <h4>Description</h4>
@@ -206,7 +214,7 @@ function charactersLoading(data, imgURL) {
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
       `<div class = "${visionClass} p-4 m-4 rounded text-white w-[30%]" id = "card">
-        <h2>Name: ${constellation.name}</h2>
+        <h2 class = "text-lg font-semibold mb-1">Name: ${constellation.name}</h2>
     <h2>Unlock: ${constellation.unlock}</h2>
     <h3>Description</h3>
     <p>${constellation.description}</p>
