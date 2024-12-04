@@ -36,6 +36,7 @@ function mainPageButtons() {
 }
 
 function twoPageButtons() {
+  console.log("twoPageButtons function used");
   let secondaryButtons = document.querySelectorAll("button");
   secondaryButtons.forEach((btn) => {
     btn.addEventListener("click", function (event) {
@@ -93,14 +94,22 @@ function nationsLoading(data, imgNation) {
 function weeklyBossesLoading(data) {
   // Clear the container
   DOMSelectors.container.innerHTML = "";
-
+  let imgBossName = "https://genshin.jmp.blue/boss/weekly-boss/";
   // Build the initial HTML
   let htmlBosses = `
-      <div class="card">
-        <h1>Name: ${data.name}</h1>
-        <h2>Description</h2>
+      <div class="text-center" id = "card">
+        <h1 class="text-3xl font-bold mb-4">Name: ${data.name}</h1>
+        <div class="flex space-x-4 justify-evenly">
+        <img src="${
+          imgBossName + thirdClickedButton.id + "/icon"
+        }" alt="" class = "w-[30%]">
+        <img src="${
+          imgBossName + thirdClickedButton.id + "/portrait"
+        }" alt="" class = "w-[30%]">
+        </div>
+        <h2 class="text-2xl font-semibold mt-6">Description</h2>
         <p>${data.description}</p>
-        <h2>Drops:</h2>
+        <h2 class="text-2xl font-semibold mt-6">Drops:</h2>
         <ul>
     `;
 
@@ -487,15 +496,32 @@ async function getData(p, k, l) {
       //if there is something in p and not l run this
       let data = await responseTypes.json();
       console.log(data);
-      data.forEach((item) => {
-        DOMSelectors.container.insertAdjacentHTML(
-          //inserts secondary buttons
-          "beforeend",
-          `<button type="submit" class="btn" id = "${item}">${item}</button>`
-        );
-      });
+      if (p === "characters") {
+        let characterImage = "https://genshin.jmp.blue/characters/";
+        data.forEach((item) => {
+          DOMSelectors.container.insertAdjacentHTML(
+            "beforeend",
+            `<div class = "flex w-[23%]">
+            <img src="${
+              characterImage + item + "/icon"
+            }" alt="" class = "w-[90%]">
+            <button type="submit" class = "btn" id = "${item}">${item}</button> 
+          </div>`
+          );
+        });
+      } else {
+        data.forEach((item) => {
+          DOMSelectors.container.insertAdjacentHTML(
+            //inserts secondary buttons
+            "beforeend",
+            `<button type="submit" class="btn" id = "${item}">${item}</button>`
+          );
+        });
+      }
+
       twoPageButtons();
     } else if (k === "/weekly-boss" && !l) {
+      DOMSelectors.container.innerHTML = "";
       let data = await responseTypes.json();
       console.log(data);
       data.forEach((item) => {
