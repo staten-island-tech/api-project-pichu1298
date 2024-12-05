@@ -66,11 +66,12 @@ function threePageButtons() {
 
 function artifactLoading(data) {
   DOMSelectors.container.innerHTML = "";
+  let artifactURl = `https://genshin.jmp.blue/artifacts/${secondClickedButton.id}/flower-of-life`;
   DOMSelectors.container.insertAdjacentHTML(
     "beforeend",
     `<div class = "card">
         <h1>Name: ${data.name}</h1>
-        <img src="" alt="">
+        <img src="${artifactURl}" alt="Img not found">
         <h2>Max Rarity: ${data["max_rarity"]}</h2>
         <h2>2 Piece Bonus: ${data["2-piece_bonus"]}</h2>
         <h2>4 Piece Bonus: ${data["4-piece_bonus"]}</h2>
