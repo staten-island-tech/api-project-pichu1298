@@ -5,6 +5,13 @@ let thirdClickedButton = "";
 const DOMSelectors = {
   container: document.querySelector("#app"),
 };
+const rarityColors = {
+  1: "bg-oneStar-primary",
+  2: "bg-twoStar-primary",
+  3: "bg-threeStar-primary",
+  4: "bg-fourStar-primary",
+  5: "bg-fiveStar-primary",
+};
 
 function insertMainPage(data) {
   let filteredTypes = data.types.filter(
@@ -18,7 +25,7 @@ function insertMainPage(data) {
   filteredTypes.forEach((type) =>
     DOMSelectors.container.insertAdjacentHTML(
       "beforeend",
-      `<button type="submit" class="btn" id = "${type}">${type}</button>`
+      `<button type="submit" class="btn w-[100%] h-[100%] m-10 text-6xl" id = "${type}">${type}</button>`
     )
   );
 }
@@ -67,14 +74,15 @@ function threePageButtons() {
 function artifactLoading(data) {
   DOMSelectors.container.innerHTML = "";
   let artifactURl = `https://genshin.jmp.blue/artifacts/${secondClickedButton.id}/flower-of-life`;
+  let rarityClassArtifact = rarityColors[data["max_rarity"]] || "bg-gray-200";
   DOMSelectors.container.insertAdjacentHTML(
     "beforeend",
     `<div class = "card">
-        <h1>Name: ${data.name}</h1>
-        <img src="${artifactURl}" alt="Img not found">
-        <h2>Max Rarity: ${data["max_rarity"]}</h2>
-        <h2>2 Piece Bonus: ${data["2-piece_bonus"]}</h2>
-        <h2>4 Piece Bonus: ${data["4-piece_bonus"]}</h2>
+        <h1 class="text-3xl font-bold mb-4 text-white">Name: ${data.name}</h1>
+        <img src="${artifactURl}" alt="Img not found" class = "w-[30%] mx-auto">
+        <h2 class="text-2xl font-semibold mt-6 ${rarityClassArtifact}">Max Rarity: ${data["max_rarity"]}</h2>
+        <h2 class="text-2xl font-semibold mt-6 text-white">2 Piece Bonus: ${data["2-piece_bonus"]}</h2>
+        <h2 class="text-2xl font-semibold mt-6 text-white">4 Piece Bonus: ${data["4-piece_bonus"]}</h2>
       </div>`
   );
 }
@@ -171,14 +179,14 @@ function charactersLoading(data, imgURL) {
         <h2 class = "text-lg font-semibold mb-1">Birthday: ${data.birthday}</h2>
         <h2 class = "text-lg font-semibold mb-1">Description</h2>
         <p>${data.description}</p>
-        <img src="${imgURL}" alt="">
+        <img src="${imgURL}" alt="genshin splash art for this character cannot be found">
         </div>`;
 
   DOMSelectors.container.insertAdjacentHTML(
     "beforeend",
     htmlCharactersProfileCard
   );
-  let htmlCharactersSkillCards = ``; // Initialize empty string to store cards
+  let htmlCharactersSkillCards = `<div class = "flex justify-center" id = "genshinSkillTalents">`; // Initialize empty string to store cards
   // Loop through skill talents
   data.skillTalents.forEach((talent) => {
     htmlCharactersSkillCards += `
@@ -201,6 +209,7 @@ function charactersLoading(data, imgURL) {
 
     htmlCharactersSkillCards += `</div>`; // Close each card
   });
+  htmlCharactersSkillCards += `</div>`;
 
   DOMSelectors.container.insertAdjacentHTML(
     "beforeend",
@@ -265,14 +274,6 @@ function charactersLoading(data, imgURL) {
 
 function foodLoading(data) {
   console.log(DOMSelectors.filterButtons);
-
-  const rarityColors = {
-    1: "bg-oneStar-primary",
-    2: "bg-twoStar-primary",
-    3: "bg-threeStar-primary",
-    4: "bg-fourStar-primary",
-    5: "bg-fiveStar-primary",
-  };
 
   DOMSelectors.container.innerHTML = ""; // Clear container before loading new data
   let foodArray = Object.entries(data).filter(([key, value]) => key !== "id");
@@ -502,11 +503,13 @@ async function getData(p, k, l) {
         data.forEach((item) => {
           DOMSelectors.container.insertAdjacentHTML(
             "beforeend",
-            `<div class = "flex w-[23%]">
+            `<div class = "container mx-auto flex flex-row justify-around items-center w-[30%]
+            }"
+            }">
             <img src="${
               characterImage + item + "/icon"
             }" alt="" class = "w-[90%]">
-            <button type="submit" class = "btn" id = "${item}">${item}</button> 
+            <button type="submit" class="btn w-[30%] h-[100%] m-10 text-2xl" id = "${item}">${item}</button> 
           </div>`
           );
         });
@@ -515,7 +518,7 @@ async function getData(p, k, l) {
           DOMSelectors.container.insertAdjacentHTML(
             //inserts secondary buttons
             "beforeend",
-            `<button type="submit" class="btn" id = "${item}">${item}</button>`
+            `<button type="submit" class="btn w-[100%] h-[100%] m-10 text-6xl" id = "${item}">${item}</button>`
           );
         });
       }
@@ -529,7 +532,7 @@ async function getData(p, k, l) {
         DOMSelectors.container.insertAdjacentHTML(
           //inserts secondary buttons
           "beforeend",
-          `<button type="submit" class="btn" id = "${item}">${item}</button>`
+          `<button type="submit" class="btn w-[100%] h-[100%] m-10 text-6xl" id = "${item}">${item}</button>`
         );
       });
       threePageButtons();
@@ -565,7 +568,7 @@ async function getData(p, k, l) {
         DOMSelectors.container.insertAdjacentHTML(
           //inserts secondary buttons
           "beforeend",
-          `<button type="submit" class="btn" id = "${item}">${item}</button>`
+          `<button type="submit" class="btn w-[100%] h-[100%] m-10 text-6xl" id = "${item}">${item}</button>`
         );
       });
       threePageButtons();
